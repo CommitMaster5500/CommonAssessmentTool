@@ -1,6 +1,7 @@
 import pytest
 from fastapi import status
 
+
 def test_create_user_success(client, admin_headers):
     """Test successful user creation by admin"""
     user_data = {
@@ -20,6 +21,7 @@ def test_create_user_success(client, admin_headers):
     assert data["role"] == "case_worker"
     assert "password" not in data  # Password should not be in response
 
+
 def test_create_user_duplicate_username(client, admin_headers):
     """Test creating user with existing username"""
     user_data = {
@@ -35,6 +37,7 @@ def test_create_user_duplicate_username(client, admin_headers):
     )
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert "Username already registered" in response.json()["detail"]
+
 
 def test_create_user_duplicate_email(client, admin_headers):
     """Test creating user with existing email"""
@@ -52,6 +55,7 @@ def test_create_user_duplicate_email(client, admin_headers):
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert "Email already registered" in response.json()["detail"]
 
+
 def test_create_user_invalid_role(client, admin_headers):
     """Test creating user with invalid role"""
     user_data = {
@@ -67,6 +71,7 @@ def test_create_user_invalid_role(client, admin_headers):
     )
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
+
 def test_create_user_unauthorized(client):
     """Test user creation without authentication"""
     user_data = {
@@ -77,6 +82,7 @@ def test_create_user_unauthorized(client):
     }
     response = client.post("/auth/users", json=user_data)
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
 
 def test_login_success_admin(client):
     """Test successful login for admin"""
@@ -89,6 +95,7 @@ def test_login_success_admin(client):
     assert "access_token" in data
     assert data["token_type"] == "bearer"
 
+
 def test_login_success_case_worker(client):
     """Test successful login for case worker"""
     response = client.post(
@@ -100,6 +107,7 @@ def test_login_success_case_worker(client):
     assert "access_token" in data
     assert data["token_type"] == "bearer"
 
+
 def test_login_wrong_password(client):
     """Test login with incorrect password"""
     response = client.post(
@@ -108,6 +116,7 @@ def test_login_wrong_password(client):
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Incorrect username or password" in response.json()["detail"]
+
 
 def test_login_nonexistent_user(client):
     """Test login with non-existent username"""
@@ -118,6 +127,7 @@ def test_login_nonexistent_user(client):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Incorrect username or password" in response.json()["detail"]
 
+
 def test_invalid_token(client):
     """Test using invalid token"""
     headers = {"Authorization": "Bearer invalid_token_here"}
@@ -125,11 +135,13 @@ def test_invalid_token(client):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Could not validate credentials" in response.json()["detail"]
 
+
 def test_missing_token(client):
     """Test accessing protected endpoint without token"""
     response = client.get("/clients/")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Not authenticated" in response.json()["detail"]
+
 
 def test_token_user_deleted(client, admin_headers):
     """Test using token of deleted user"""
@@ -153,7 +165,7 @@ def test_token_user_deleted(client, admin_headers):
         data={"username": "temporary", "password": "temppass123"}
     )
     token = response.json()["access_token"]
-    
+
     # Try using the token
     headers = {"Authorization": f"Bearer {token}"}
     response = client.get("/clients/", headers=headers)

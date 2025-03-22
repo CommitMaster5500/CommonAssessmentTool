@@ -42,7 +42,8 @@ def initialize_database():
             admin_user = admin
             logger.info("Admin user already exists.")
 
-        case_worker = db.query(User).filter(User.username == WORKER_USERNAME).first()
+        case_worker = db.query(User).filter(
+            User.username == WORKER_USERNAME).first()
         if not case_worker:
             case_worker = User(
                 username=WORKER_USERNAME,
@@ -80,7 +81,8 @@ def initialize_database():
             "time_unemployed",
             "success_rate",
         ]
-        df[integer_columns] = df[integer_columns].apply(pd.to_numeric, errors="coerce")
+        df[integer_columns] = df[integer_columns].apply(
+            pd.to_numeric, errors="coerce")
 
         for _, row in df.iterrows():
             client = Client(

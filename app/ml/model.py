@@ -47,7 +47,8 @@ def prepare_models():
         "currently_employed",  # Currently employed (bool)
         "substance_use",  # Substance use disorder (bool)
         "time_unemployed",  # Years unemployed
-        "need_mental_health_support_bool",  # Needs mental health support (bool)
+        "need_mental_health_support_bool",
+        # Needs mental health support (bool)
     ]
     # Define intervention columns
     intervention_columns = [

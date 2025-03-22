@@ -36,7 +36,10 @@ class ClientQueryService:
 
         for service_name, status in service_filters.items():
             if status is not None:
-                query = query.filter(getattr(ClientCase, service_name) == status)
+                query = query.filter(
+                    getattr(
+                        ClientCase,
+                        service_name) == status)
 
         try:
             return query.all()
