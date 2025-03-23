@@ -2,10 +2,8 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-env_path = load_dotenv(
-    dotenv_path=os.path.join(
-        os.path.dirname(__file__),
-        ".env"))
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+env_path = os.path.join(base_dir, ".env")
 env_example_path = os.path.join(os.path.dirname(__file__), ".env.example")
 
 # Load .env if it exists, otherwise load .env.example

@@ -17,6 +17,7 @@ from app.config.settings import (
     WORKER_PASSWORD,
 )
 
+
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
