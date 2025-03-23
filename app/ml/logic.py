@@ -72,7 +72,8 @@ def clean_input_data(input_data):
     for column in columns:
         value = demographics.get(column, None)
         if isinstance(value, str):
-            value = convert_text(value)  # Removed 'column' from here as it wasn't used
+            # Removed 'column' from here as it wasn't used
+            value = convert_text(value)
         output.append(value)
     return output
 
@@ -189,7 +190,8 @@ def intervention_row_to_names(row_data):
     Returns:
         list: Names of active interventions
     """
-    return [COLUMN_INTERVENTIONS[i] for i, value in enumerate(row_data) if value == 1]
+    return [COLUMN_INTERVENTIONS[i]
+            for i, value in enumerate(row_data) if value == 1]
 
 
 def process_results(baseline_pred, results_matrix):
@@ -203,9 +205,8 @@ def process_results(baseline_pred, results_matrix):
     Returns:
         dict: Processed results with baseline and interventions
     """
-    result_list = [
-        (row[-1], intervention_row_to_names(row[:-1])) for row in results_matrix
-    ]
+    result_list = [(row[-1], intervention_row_to_names(row[:-1]))
+                   for row in results_matrix]
     return {"baseline": baseline_pred[-1], "interventions": result_list}
 
 

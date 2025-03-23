@@ -13,8 +13,8 @@ class ClientCaseService:
     def get_client_services(self, client_id: int):
         """Get all services for a specific client with case worker info"""
         client_cases = (
-            self.db.query(ClientCase).filter(ClientCase.client_id == client_id).all()
-        )
+            self.db.query(ClientCase).filter(
+                ClientCase.client_id == client_id).all())
         if not client_cases:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -27,10 +27,9 @@ class ClientCaseService:
     ):
         """Update a client's service records"""
         client_case = (
-            self.db.query(ClientCase)
-            .filter(ClientCase.client_id == client_id, ClientCase.user_id == user_id)
-            .first()
-        )
+            self.db.query(ClientCase) .filter(
+                ClientCase.client_id == client_id,
+                ClientCase.user_id == user_id) .first())
 
         if not client_case:
             raise HTTPException(
@@ -62,7 +61,8 @@ class ClientCaseService:
                 detail=f"Client with id {client_id} not found",
             )
 
-        case_worker = self.db.query(User).filter(User.id == case_worker_id).first()
+        case_worker = self.db.query(User).filter(
+            User.id == case_worker_id).first()
         if not case_worker:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -70,12 +70,9 @@ class ClientCaseService:
             )
 
         existing_case = (
-            self.db.query(ClientCase)
-            .filter(
-                ClientCase.client_id == client_id, ClientCase.user_id == case_worker_id
-            )
-            .first()
-        )
+            self.db.query(ClientCase) .filter(
+                ClientCase.client_id == client_id,
+                ClientCase.user_id == case_worker_id) .first())
 
         if existing_case:
             raise HTTPException(
@@ -110,7 +107,8 @@ class ClientCaseService:
 
     def get_clients_by_case_worker(self, case_worker_id: int):
         """Fetch all clients assigned to a specific case worker."""
-        case_worker = self.db.query(User).filter(User.id == case_worker_id).first()
+        case_worker = self.db.query(User).filter(
+            User.id == case_worker_id).first()
         if not case_worker:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
