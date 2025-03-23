@@ -11,9 +11,11 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
 
 
-def prepare_models():
+def prepare_models(model_type="random_forest"):
     """
     Prepare and train the Random Forest model using the dataset.
 
@@ -70,12 +72,21 @@ def prepare_models():
         features, targets, test_size=0.2, random_state=42
     )
     # Initialize and train the model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    # model = RandomForestRegressor(n_estimators=100, random_state=42)
+    if model_type == "random_forest":
+        model = RandomForestRegressor(n_estimators=100, random_state=42)
+    elif model_type == "linear_regression":
+        model = LinearRegression()
+    elif model_type == "svr":
+        model = SVR()
+    else:
+        raise ValueError(f"Unknown model_type: {model_type}")
+    
     model.fit(features_train, targets_train)
     return model
 
 
-def save_model(model, filename="model.pkl"):
+def save_model(model, filename):
     """
     Save the trained model to a file.
 
@@ -83,8 +94,8 @@ def save_model(model, filename="model.pkl"):
         model: Trained model to save
         filename (str): Name of the file to save the model to
     """
-    with open(filename, "wb") as model_file:
-        pickle.dump(model, model_file)
+    with open(f"ml_models/{filename}.pkl", "wb") as file:
+        pickle.dump(model, file)
 
 
 def load_model(filename="model.pkl"):
@@ -104,8 +115,10 @@ def load_model(filename="model.pkl"):
 def main():
     """Main function to train and save the model."""
     print("Starting model training...")
-    model = prepare_models()
-    save_model(model)
+    # model = prepare_models()
+    for model_name in ["random_forest", "linear_regression", "svr"]:
+        model = prepare_models(model_type=model)
+        save_model(model, model_name)
     print("Model training completed and saved successfully.")
 
 
