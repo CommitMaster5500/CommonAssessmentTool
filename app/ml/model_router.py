@@ -7,8 +7,8 @@ import json
 router = APIRouter(prefix="/ml_models", tags=["models"])
 
 # ------------------ Constants ------------------ #
-MODEL_DIR = "ml_models"  # Directory where all .pkl models are stored
-MODEL_CONFIG = "model_config.json"  # Tracks current model
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "ml_models")  # Directory where all .pkl models are stored
+MODEL_CONFIG = os.path.join(os.path.dirname(__file__), "model_config.json")  # Tracks current model
 MODEL_ACTIVE_PATH = os.path.join(os.path.dirname(__file__), "model.pkl")  # Fixed model path used by locked module
 
 
