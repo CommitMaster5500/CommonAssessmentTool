@@ -117,7 +117,7 @@ def main():
     print("Starting model training...")
     # model = prepare_models()
     for model_name in ["random_forest", "linear_regression", "svr"]:
-        model = prepare_models(model_type=model)
+        model = prepare_models(model_type=model_name)
         save_model(model, model_name)
     print("Model training completed and saved successfully.")
 
