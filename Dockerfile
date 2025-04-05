@@ -1,20 +1,15 @@
-# Use Python 3.11 image as base
-FROM python:3.11
+FROM python:3.11-slim
 
-# Set working directory
-WORKDIR /code
+WORKDIR /application
 
-# Copy requirements first to leverage Docker cache
-COPY ./requirements.txt /code/requirements.txt
+COPY ./requirements.txt /application/requirements.txt
 
-# Install required packages
-RUN pip install --no-cache-dir -r /code/requirements.txt
+RUN apt-get update && apt-get install -y build-essential gcc libffi-dev libpq-dev curl && rm -rf /var/lib/apt/lists/*
 
-# Copy the rest of your application
-COPY . /code/
+RUN pip install --verbose --no-cache-dir -r /application/requirements.txt
 
-# Expose the port your app runs on
+COPY . /application/
+
 EXPOSE 8000
 
-# Command to run the application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
