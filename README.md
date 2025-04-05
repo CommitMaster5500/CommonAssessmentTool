@@ -1,4 +1,4 @@
-Team TicTech 
+Team TicTech
 
 Project -- Feature Development Backend: Create CRUD API's for Client
 
@@ -7,11 +7,11 @@ User Story
 As a user of the backend API's, I want to call API's that can retrieve, update, and delete information of clients who have already registered with the CaseManagment service so that I more efficiently help previous clients make better decisions on how to be gainfully employed.
 
 Acceptance Criteria
+
 - Provide REST API endpoints so that the Frontend can use them to get information on an existing client.
 - Document how to use the REST API
 - Choose and create a database to hold client information
 - Add tests
-
 
 This will contain the model used for the project that based on the input information will give the social workers the clients baseline level of success and what their success will be after certain interventions.
 
@@ -20,6 +20,7 @@ The model works off of dummy data of several combinations of clients alongside t
 This also has an API file to interact with the front end, and logic in order to process the interventions coming from the front end. This includes functions to clean data, create a matrix of all possible combinations in order to get the ones with the highest increase of success, and output the results in a way the front end can interact with.
 
 -------------------------How to Use-------------------------
+
 1. In the virtual environment you've created for this project, install all dependencies in requirements.txt (pip install -r requirements.txt)
 
 2. Run the app (uvicorn app.main:app --reload)
@@ -28,10 +29,10 @@ This also has an API file to interact with the front end, and logic in order to 
 
 4. Go to SwaggerUI (http://127.0.0.1:8000/docs)
 
-4. Log in as admin (username: admin password: admin123)
+5. Log in as admin (username: admin password: admin123)
 
-5. Click on each endpoint to use
--Create User (Only users in admin role can create new users. The role field needs to be either "admin" or "case_worker")
+6. Click on each endpoint to use
+   -Create User (Only users in admin role can create new users. The role field needs to be either "admin" or "case_worker")
 
 -Get clients (Display all the clients that are in the database)
 
@@ -55,3 +56,18 @@ This also has an API file to interact with the front end, and logic in order to 
 
 -Create case assignment (Allow authorized users to create a new case assignment.)
 
+## Run with Docker
+
+- Use Docker Run:
+
+```bash
+docker build -t commonAssessmentTool-app .
+docker run -p 8000:8000 commonAssessmentTool-app
+```
+
+- Use Docker Compose:
+
+```bash
+docker-compose build --no-cache
+docker-compose up
+```
