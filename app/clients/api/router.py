@@ -26,17 +26,12 @@ router = APIRouter(prefix="/clients", tags=["clients"])
 
 @router.get("/", response_model=ClientListResponse)
 async def get_clients(
-        current_user: User = Depends(get_admin_user),
-        skip: int = Query(
-            default=0,
-            ge=0,
-            description="Number of records to skip"),
+    current_user: User = Depends(get_admin_user),
+    skip: int = Query(default=0, ge=0, description="Number of records to skip"),
     limit: int = Query(
-            default=50,
-            ge=1,
-            le=150,
-            description="Maximum number of records to return"),
-        db: Session = Depends(get_db),
+        default=50, ge=1, le=150, description="Maximum number of records to return"
+    ),
+    db: Session = Depends(get_db),
 ):
     return ClientRepository(db).get_clients(skip, limit)
 
@@ -173,8 +168,7 @@ async def get_clients_by_services(
 # ------------------ Client Case  -----------------------
 
 
-@router.get("/case-worker/{case_worker_id}",
-            response_model=List[ClientResponse])
+@router.get("/case-worker/{case_worker_id}", response_model=List[ClientResponse])
 async def get_clients_by_case_worker(
     case_worker_id: int,
     current_user: User = Depends(get_current_user),
@@ -214,5 +208,4 @@ async def create_case_assignment(
     db: Session = Depends(get_db),
 ):
     """Create a new case assignment for a client with a case worker"""
-    return ClientCaseService(db).create_case_assignment(
-        client_id, case_worker_id)
+    return ClientCaseService(db).create_case_assignment(client_id, case_worker_id)

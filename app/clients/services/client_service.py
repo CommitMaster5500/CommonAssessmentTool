@@ -91,13 +91,12 @@ class ClientService:
 
         if gender is not None and gender not in [1, 2]:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Gender must be 1 or 2")
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Gender must be 1 or 2"
+            )
 
         # Apply filters for non-None values
         if employment_status is not None:
-            query = query.filter(
-                Client.currently_employed == employment_status)
+            query = query.filter(Client.currently_employed == employment_status)
         if age_min is not None:
             query = query.filter(Client.age >= age_min)
         if gender is not None:
@@ -117,22 +116,19 @@ class ClientService:
         if fluent_english is not None:
             query = query.filter(Client.fluent_english == fluent_english)
         if reading_english_scale is not None:
-            query = query.filter(
-                Client.reading_english_scale == reading_english_scale)
+            query = query.filter(Client.reading_english_scale == reading_english_scale)
         if speaking_english_scale is not None:
             query = query.filter(
                 Client.speaking_english_scale == speaking_english_scale
             )
         if writing_english_scale is not None:
-            query = query.filter(
-                Client.writing_english_scale == writing_english_scale)
+            query = query.filter(Client.writing_english_scale == writing_english_scale)
         if numeracy_scale is not None:
             query = query.filter(Client.numeracy_scale == numeracy_scale)
         if computer_scale is not None:
             query = query.filter(Client.computer_scale == computer_scale)
         if transportation_bool is not None:
-            query = query.filter(
-                Client.transportation_bool == transportation_bool)
+            query = query.filter(Client.transportation_bool == transportation_bool)
         if caregiver_bool is not None:
             query = query.filter(Client.caregiver_bool == caregiver_bool)
         if housing is not None:
@@ -162,9 +158,7 @@ class ClientService:
             )
 
     @staticmethod
-    def get_clients_by_services(
-            db: Session,
-            **service_filters: Optional[bool]):
+    def get_clients_by_services(db: Session, **service_filters: Optional[bool]):
         """
         Get clients filtered by multiple service statuses.
         """
@@ -186,8 +180,9 @@ class ClientService:
     @staticmethod
     def get_client_services(db: Session, client_id: int):
         """Get all services for a specific client with case worker info"""
-        client_cases = (db.query(ClientCase).filter(
-            ClientCase.client_id == client_id).all())
+        client_cases = (
+            db.query(ClientCase).filter(ClientCase.client_id == client_id).all()
+        )
         if not client_cases:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -229,10 +224,7 @@ class ClientService:
         )
 
     @staticmethod
-    def update_client(
-            db: Session,
-            client_id: int,
-            client_update: ClientUpdate):
+    def update_client(db: Session, client_id: int, client_update: ClientUpdate):
         """Update a client's information"""
         client = db.query(Client).filter(Client.id == client_id).first()
         if not client:
@@ -258,15 +250,14 @@ class ClientService:
 
     @staticmethod
     def update_client_services(
-            db: Session,
-            client_id: int,
-            user_id: int,
-            service_update: ServiceUpdate):
+        db: Session, client_id: int, user_id: int, service_update: ServiceUpdate
+    ):
         """Update a client's services and outcomes for a specific case worker"""
         client_case = (
-            db.query(ClientCase) .filter(
-                ClientCase.client_id == client_id,
-                ClientCase.user_id == user_id) .first())
+            db.query(ClientCase)
+            .filter(ClientCase.client_id == client_id, ClientCase.user_id == user_id)
+            .first()
+        )
 
         if not client_case:
             raise HTTPException(
@@ -291,10 +282,7 @@ class ClientService:
             )
 
     @staticmethod
-    def create_case_assignment(
-            db: Session,
-            client_id: int,
-            case_worker_id: int):
+    def create_case_assignment(db: Session, client_id: int, case_worker_id: int):
         """Create a new case assignment"""
         # Check if client exists
         client = db.query(Client).filter(Client.id == client_id).first()
@@ -314,9 +302,12 @@ class ClientService:
 
         # Check if assignment already exists
         existing_case = (
-            db.query(ClientCase) .filter(
-                ClientCase.client_id == client_id,
-                ClientCase.user_id == case_worker_id) .first())
+            db.query(ClientCase)
+            .filter(
+                ClientCase.client_id == client_id, ClientCase.user_id == case_worker_id
+            )
+            .first()
+        )
 
         if existing_case:
             raise HTTPException(
@@ -363,8 +354,7 @@ class ClientService:
 
         try:
             # Delete associated client_cases
-            db.query(ClientCase).filter(
-                ClientCase.client_id == client_id).delete()
+            db.query(ClientCase).filter(ClientCase.client_id == client_id).delete()
             # Delete the client
             db.delete(client)
             db.commit()

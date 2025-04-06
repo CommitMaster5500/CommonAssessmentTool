@@ -8,13 +8,9 @@ def test_create_user_success(client, admin_headers):
         "username": "newuser",
         "email": "new@test.com",
         "password": "testpass123",
-        "role": "case_worker"
+        "role": "case_worker",
     }
-    response = client.post(
-        "/auth/users",
-        headers=admin_headers,
-        json=user_data
-    )
+    response = client.post("/auth/users", headers=admin_headers, json=user_data)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["username"] == "newuser"
@@ -28,13 +24,9 @@ def test_create_user_duplicate_username(client, admin_headers):
         "username": "testadmin",  # This username exists in test database
         "email": "another@test.com",
         "password": "testpass123",
-        "role": "case_worker"
+        "role": "case_worker",
     }
-    response = client.post(
-        "/auth/users",
-        headers=admin_headers,
-        json=user_data
-    )
+    response = client.post("/auth/users", headers=admin_headers, json=user_data)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert "Username already registered" in response.json()["detail"]
 
@@ -45,13 +37,9 @@ def test_create_user_duplicate_email(client, admin_headers):
         "username": "uniqueuser",
         "email": "testadmin@example.com",  # This email exists in test database
         "password": "testpass123",
-        "role": "case_worker"
+        "role": "case_worker",
     }
-    response = client.post(
-        "/auth/users",
-        headers=admin_headers,
-        json=user_data
-    )
+    response = client.post("/auth/users", headers=admin_headers, json=user_data)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert "Email already registered" in response.json()["detail"]
 
@@ -62,13 +50,9 @@ def test_create_user_invalid_role(client, admin_headers):
         "username": "newuser",
         "email": "new@test.com",
         "password": "testpass123",
-        "role": "invalid_role"  # Invalid role
+        "role": "invalid_role",  # Invalid role
     }
-    response = client.post(
-        "/auth/users",
-        headers=admin_headers,
-        json=user_data
-    )
+    response = client.post("/auth/users", headers=admin_headers, json=user_data)
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
 
@@ -78,7 +62,7 @@ def test_create_user_unauthorized(client):
         "username": "newuser",
         "email": "new@test.com",
         "password": "testpass123",
-        "role": "case_worker"
+        "role": "case_worker",
     }
     response = client.post("/auth/users", json=user_data)
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -87,8 +71,7 @@ def test_create_user_unauthorized(client):
 def test_login_success_admin(client):
     """Test successful login for admin"""
     response = client.post(
-        "/auth/token",
-        data={"username": "testadmin", "password": "testpass123"}
+        "/auth/token", data={"username": "testadmin", "password": "testpass123"}
     )
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
@@ -99,8 +82,7 @@ def test_login_success_admin(client):
 def test_login_success_case_worker(client):
     """Test successful login for case worker"""
     response = client.post(
-        "/auth/token",
-        data={"username": "testworker", "password": "workerpass123"}
+        "/auth/token", data={"username": "testworker", "password": "workerpass123"}
     )
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
@@ -111,8 +93,7 @@ def test_login_success_case_worker(client):
 def test_login_wrong_password(client):
     """Test login with incorrect password"""
     response = client.post(
-        "/auth/token",
-        data={"username": "testadmin", "password": "wrongpassword"}
+        "/auth/token", data={"username": "testadmin", "password": "wrongpassword"}
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Incorrect username or password" in response.json()["detail"]
@@ -121,8 +102,7 @@ def test_login_wrong_password(client):
 def test_login_nonexistent_user(client):
     """Test login with non-existent username"""
     response = client.post(
-        "/auth/token",
-        data={"username": "nonexistent", "password": "testpass123"}
+        "/auth/token", data={"username": "nonexistent", "password": "testpass123"}
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Incorrect username or password" in response.json()["detail"]
@@ -150,19 +130,14 @@ def test_token_user_deleted(client, admin_headers):
         "username": "temporary",
         "email": "temp@test.com",
         "password": "temppass123",
-        "role": "admin"  # Changed to admin so they can access /clients/
+        "role": "admin",  # Changed to admin so they can access /clients/
     }
-    response = client.post(
-        "/auth/users",
-        headers=admin_headers,
-        json=user_data
-    )
+    response = client.post("/auth/users", headers=admin_headers, json=user_data)
     assert response.status_code == status.HTTP_200_OK
 
     # Get token for new user
     response = client.post(
-        "/auth/token",
-        data={"username": "temporary", "password": "temppass123"}
+        "/auth/token", data={"username": "temporary", "password": "temppass123"}
     )
     token = response.json()["access_token"]
 

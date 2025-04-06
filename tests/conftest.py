@@ -12,10 +12,7 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
-TestingSessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 @pytest.fixture
@@ -155,20 +152,16 @@ def client(test_db):
 @pytest.fixture
 def admin_token(client):
     response = client.post(
-        "/auth/token",
-        data={
-            "username": "testadmin",
-            "password": "testpass123"})
+        "/auth/token", data={"username": "testadmin", "password": "testpass123"}
+    )
     return response.json()["access_token"]
 
 
 @pytest.fixture
 def case_worker_token(client):
     response = client.post(
-        "/auth/token",
-        data={
-            "username": "testworker",
-            "password": "workerpass123"})
+        "/auth/token", data={"username": "testworker", "password": "workerpass123"}
+    )
     return response.json()["access_token"]
 
 
