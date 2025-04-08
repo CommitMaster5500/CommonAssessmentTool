@@ -3,6 +3,7 @@ Client service module handling all database operations for clients.
 Provides CRUD operations and business logic for client management.
 """
 
+import os, json, joblib
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status
@@ -10,7 +11,7 @@ from typing import List, Optional, Dict, Any
 from app.models.user import User
 from app.models.client import Client
 from app.models.client_case import ClientCase
-from app.clients.schemas import ClientUpdate, ServiceUpdate
+from app.clients.schemas import ClientUpdate, ServiceUpdate, PredictionInput, PredictionResponse
 
 
 class ClientService:
@@ -365,3 +366,83 @@ class ClientService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Failed to delete client: {str(e)}",
             )
+
+    
+    @staticmethod
+    def predict_success(db: Session, client_id: int) -> PredictionResponse:
+        """
+        Predict client's success rate using current ML model.
+        Merges DB info and input data into features.
+        """
+
+        client = db.query(Client).filter(Client.id == client_id).first()
+        if not client:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Client with id {client_id} not found",
+            )
+        
+        client_case = db.query(ClientCase).filter(ClientCase.client_id == client_id).first()
+        if not client_case:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Client with id {client_id} not found",
+            )
+
+        try:
+            features = [
+                client.age,
+                client.gender,
+                client.work_experience,
+                client.canada_workex,
+                client.dep_num,
+                client.canada_born,
+                client.citizen_status,
+                client.level_of_schooling,
+                client.fluent_english,
+                client.reading_english_scale,
+                client.speaking_english_scale,
+                client.writing_english_scale,
+                client.numeracy_scale,
+                client.computer_scale,
+                client.transportation_bool,
+                client.caregiver_bool,
+                client.housing,
+                client.income_source,
+                client.felony_bool,
+                client.attending_school,
+                client.currently_employed,
+                client.substance_use,
+                client.time_unemployed,
+                client.need_mental_health_support_bool,
+                client_case.employment_assistance,
+                client_case.life_stabilization,
+                client_case.retention_services,
+                client_case.specialized_services,
+                client_case.employment_related_financial_supports,
+                client_case.employer_financial_supports,
+                client_case.enhanced_referrals,
+            ]
+        except AttributeError as e:
+            raise HTTPException(status_code=500, detail=f"Missing required field: {e}")
+
+
+        model_path = os.path.join(os.path.dirname(__file__), "../../ml/model.pkl")
+        if not os.path.exists(model_path):
+            raise HTTPException(status_code=500, detail="Model file not found.")
+
+        try:
+            model = joblib.load(model_path)
+            prediction_result = model.predict([features])
+            success_prob = prediction_result[0] if hasattr(prediction_result, '__getitem__') else prediction_result
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Model prediction failed: {str(e)}")
+
+        model_name = "unknown"
+        config_path = os.path.join(os.path.dirname(__file__), "../../ml/model_config.json")
+        if os.path.exists(config_path):
+            with open(config_path, "r") as f:
+                model_name = json.load(f).get("active_model", "unknown")
+
+
+        return PredictionResponse(success_rate=round(success_prob, 2), model_used=model_name)

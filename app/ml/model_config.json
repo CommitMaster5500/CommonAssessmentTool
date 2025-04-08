@@ -1,3 +1,1 @@
-{
-    "active_model": "random_forest"
-}
+{"active_model": "linear_regression"}
