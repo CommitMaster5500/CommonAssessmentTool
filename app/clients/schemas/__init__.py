@@ -6,4 +6,4 @@ from .client_case import (
     ServiceUpdate,
     ServiceResponse,
 )
-from .prediction import PredictionInput
+from .prediction import PredictionInput, PredictionResponse

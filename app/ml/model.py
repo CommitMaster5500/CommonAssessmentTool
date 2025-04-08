@@ -23,7 +23,7 @@ def prepare_models(model_type="random_forest"):
         RandomForestRegressor: Trained model for predicting success rates
     """
     # Load dataset
-    data = pd.read_csv("data/data_commontool.csv")
+    data = pd.read_csv("app/ml/data/data_commontool.csv")
     # Define feature columns
     feature_columns = [
         "age",  # Client's age
@@ -94,7 +94,7 @@ def save_model(model, filename):
         model: Trained model to save
         filename (str): Name of the file to save the model to
     """
-    with open(f"ml_models/{filename}.pkl", "wb") as file:
+    with open(f"app/ml/ml_models/{filename}.pkl", "wb") as file:
         pickle.dump(model, file)
 
 

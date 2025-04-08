@@ -10,13 +10,15 @@ from typing import List, Optional
 from app.auth.router import get_current_user, get_admin_user
 from app.database import get_db
 from app.models.user import User
-from app.clients.services import ClientRepository, ClientQueryService, ClientCaseService
+from app.clients.services import ClientRepository, ClientQueryService, ClientCaseService, ClientService
 from app.clients.schemas import (
     ClientResponse,
     ClientUpdate,
     ClientListResponse,
     ServiceResponse,
     ServiceUpdate,
+    PredictionInput,
+    PredictionResponse
 )
 
 router = APIRouter(prefix="/clients", tags=["clients"])
@@ -209,3 +211,14 @@ async def create_case_assignment(
 ):
     """Create a new case assignment for a client with a case worker"""
     return ClientCaseService(db).create_case_assignment(client_id, case_worker_id)
+
+# ------------------ Prediction ------------------
+
+@router.post("/{client_id}/predict", response_model=PredictionResponse)
+async def predict_client_success(
+    client_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    prediction = ClientService.predict_success(db, client_id)
+    return prediction

@@ -30,3 +30,17 @@ class PredictionInput(BaseModel):
     substance_use: str
     time_unemployed: int
     need_mental_health_support_bool: str
+    employment_assistance: int
+    life_stabilization: int
+    retention_services: int
+    specialized_services: int
+    employment_related_financial_supports: int
+    employer_financial_supports: int
+    enhanced_referrals: int
+
+
+class PredictionResponse(BaseModel):
+    """Response model for prediction results"""
+
+    success_rate: float
+    model_used: str

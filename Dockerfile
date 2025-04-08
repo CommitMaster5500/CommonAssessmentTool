@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-WORKDIR /application
+WORKDIR /app
 
 COPY ./requirements.txt /application/requirements.txt
 
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y build-essential gcc libffi-dev libpq-de
 
 RUN pip install --verbose --no-cache-dir -r /application/requirements.txt
 
-COPY . /application/
+COPY . /app/
 
 EXPOSE 8000
 
