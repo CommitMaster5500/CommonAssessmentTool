@@ -177,3 +177,8 @@ packages = ["app"]
 [project.urls]
 Homepage = "https://github.com/CommitMaster5500/CommonAssessmentTool"
 Issues = "https://github.com/CommitMaster5500/CommonAssessmentTool/issues"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+skip-string-normalization = true

@@ -81,7 +81,7 @@ def prepare_models(model_type="random_forest"):
         model = SVR()
     else:
         raise ValueError(f"Unknown model_type: {model_type}")
-    
+
     model.fit(features_train, targets_train)
     return model
 

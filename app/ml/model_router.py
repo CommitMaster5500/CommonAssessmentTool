@@ -7,9 +7,15 @@ import json
 router = APIRouter(prefix="/ml_models", tags=["models"])
 
 # ------------------ Constants ------------------ #
-MODEL_DIR = os.path.join(os.path.dirname(__file__), "ml_models")  # Directory where all .pkl models are stored
-MODEL_CONFIG = os.path.join(os.path.dirname(__file__), "model_config.json")  # Tracks current model
-MODEL_ACTIVE_PATH = os.path.join(os.path.dirname(__file__), "model.pkl")  # Fixed model path used by locked module
+MODEL_DIR = os.path.join(
+    os.path.dirname(__file__), "ml_models"
+)  # Directory where all .pkl models are stored
+MODEL_CONFIG = os.path.join(
+    os.path.dirname(__file__), "model_config.json"
+)  # Tracks current model
+MODEL_ACTIVE_PATH = os.path.join(
+    os.path.dirname(__file__), "model.pkl"
+)  # Fixed model path used by locked module
 
 
 # ------------------ Helper Functions ------------------ #
@@ -40,13 +46,16 @@ def set_active_model(model_name: str):
     try:
         shutil.copyfile(source_path, MODEL_ACTIVE_PATH)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to activate model: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to activate model: {str(e)}"
+        )
 
     with open(MODEL_CONFIG, "w") as f:
         json.dump({"active_model": model_name}, f)
 
 
 # ------------------ API Endpoints ------------------ #
+
 
 @router.get("/", response_model=List[str])
 def get_model_list():

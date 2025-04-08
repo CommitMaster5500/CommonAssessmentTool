@@ -25,10 +25,7 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def authenticate_user(
-        db: Session,
-        username: str,
-        password: str) -> Optional[User]:
+def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
     """Verify username and password"""
     user = db.query(User).filter(User.username == username).first()
     if not user or not verify_password(password, user.hashed_password):
@@ -83,9 +80,7 @@ def create_user(db: Session, user_data: UserCreate) -> User:
     """Create a new user"""
     # Check if username or email exists
     if db.query(User).filter(User.username == user_data.username).first():
-        raise HTTPException(
-            status_code=400,
-            detail="Username already registered")
+        raise HTTPException(status_code=400, detail="Username already registered")
     if db.query(User).filter(User.email == user_data.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
