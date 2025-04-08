@@ -56,6 +56,8 @@ This also has an API file to interact with the front end, and logic in order to 
 
 -Create case assignment (Allow authorized users to create a new case assignment.)
 
+-Predict success rate for a client （Allow authorized users to use the currently selected machine learning model to return the predicted success percentage）
+
 ## Run with Docker
 
 - Use Docker Run:
