@@ -16,6 +16,7 @@ from app.config.settings import (
     WORKER_EMAIL,
     WORKER_PASSWORD,
 )
+from app.database import Base, engine
 
 
 logging.basicConfig(
@@ -23,6 +24,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+Base.metadata.create_all(bind=engine)
 
 def initialize_database():
     logger.info("Starting database initialization...")
