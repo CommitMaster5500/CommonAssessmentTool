@@ -12,4 +12,6 @@ services:
     build: .
     depends_on:
       - backend
+    volumes:
+      - .:/app
     command: python initialize_data.py
