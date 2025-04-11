@@ -73,3 +73,10 @@ docker run -p 8000:8000 commonAssessmentTool-app
 docker-compose build --no-cache
 docker-compose up
 ```
+
+## Remote Access
+
+The backend application is deployed to the cloud and can be accessed via Swagger UI:
+```bash
+http://3.12.161.43:8000/docs
+```
