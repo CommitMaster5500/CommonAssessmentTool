@@ -23,7 +23,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 # Database
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sql_app.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # Admin User
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
