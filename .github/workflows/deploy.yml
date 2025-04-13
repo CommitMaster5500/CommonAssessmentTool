@@ -17,5 +17,6 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             git pull origin xy-shen-sp3
+            git checkout xy-shen-sp3
             docker-compose down
             docker-compose up -d --build
