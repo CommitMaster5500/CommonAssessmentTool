@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    if: github.event.release.target_commitish == 'xy-shen-sp3'
+    if: github.event.release.target_commitish == 'main'
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ~/CommonAssessmentTool
-            git pull origin xy-shen-sp3
-            git checkout xy-shen-sp3
+            git pull origin main
+            git checkout main
             docker-compose down
             docker-compose up -d --build

@@ -38,25 +38,25 @@ async def get_clients(
     return ClientRepository(db).get_clients(skip, limit)
 
 
-# @router.get("/{client_id}", response_model=ClientResponse)
-# async def get_client(
-#     client_id: int,
-#     current_user: User = Depends(get_admin_user),
-#     db: Session = Depends(get_db),
-# ):
-#     """Get a specific client by ID"""
-#     return ClientRepository(db).get_client(client_id)
+@router.get("/{client_id}", response_model=ClientResponse)
+async def get_client(
+    client_id: int,
+    current_user: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    """Get a specific client by ID"""
+    return ClientRepository(db).get_client(client_id)
 
 
-# @router.put("/{client_id}", response_model=ClientResponse)
-# async def update_client(
-#     client_id: int,
-#     client_data: ClientUpdate,
-#     current_user: User = Depends(get_admin_user),
-#     db: Session = Depends(get_db),
-# ):
-#     """Update a client's information"""
-#     return ClientRepository(db).update_client(client_id, client_data)
+@router.put("/{client_id}", response_model=ClientResponse)
+async def update_client(
+    client_id: int,
+    client_data: ClientUpdate,
+    current_user: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    """Update a client's information"""
+    return ClientRepository(db).update_client(client_id, client_data)
 
 
 @router.delete("/{client_id}", status_code=status.HTTP_204_NO_CONTENT)
