@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [master, main, xy-shen-sp3]
+    branches: [master, main]
   pull_request:
-    branches: [master, main, xy-shen-sp3]
+    branches: [master, main]
 
 jobs:
   test:
@@ -48,7 +48,7 @@ jobs:
 
   deploy:
     needs: docker-test
-    if: github.ref == 'refs/heads/xy-shen-sp3'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -60,7 +60,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ~/CommonAssessmentTool
-            git pull origin xy-shen-sp3
-            git checkout xy-shen-sp3
+            git pull origin main
+            git checkout main
             docker-compose down
             docker-compose up -d --build
