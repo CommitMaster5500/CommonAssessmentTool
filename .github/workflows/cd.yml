@@ -60,8 +60,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ~/CommonAssessmentTool
-            git fetch origin
-            git checkout xy-shen-sp3
-            git pull origin xy-shen-sp3
+            git checkout main
+            git pull origin main
             docker-compose down
             docker-compose up -d --build
