@@ -5,6 +5,8 @@ on:
     branches: [master, main, xy-shen-sp3]
   pull_request:
     branches: [master, main, xy-shen-sp3]
+  release:
+    types: [published]
 
 jobs:
   test:
@@ -48,7 +50,7 @@ jobs:
 
   deploy:
     needs: docker-test
-    if: github.ref == 'refs/heads/xy-shen-sp3'
+    if: github.event_name == 'release' || github.ref == 'refs/heads/xy-shen-sp3'
     runs-on: ubuntu-latest
 
     steps:
