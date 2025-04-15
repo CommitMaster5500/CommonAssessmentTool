@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, xy-shen-sp3]
   pull_request:
-    branches: [master, main]
+    branches: [master, main, xy-shen-sp3]
 
 jobs:
   test:
@@ -48,7 +48,7 @@ jobs:
 
   deploy:
     needs: docker-test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/xy-shen-sp3'
     runs-on: ubuntu-latest
 
     steps:
