@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, xy-shen-sp3]
   pull_request:
-    branches: [master, main]
+    branches: [master, main, xy-shen-sp3]
 
 jobs:
   test:
@@ -27,7 +27,7 @@ jobs:
         run: |
           python -m pytest tests/
 
-  deploy:
+  docker-test:
     needs: test # This ensures deploy only runs if tests pass
     runs-on: ubuntu-latest
 
@@ -45,3 +45,22 @@ jobs:
       - name: Test Docker container
         run: |
           curl http://localhost:8000/docs
+
+  deploy:
+    needs: docker-test
+    if: github.ref == 'refs/heads/xy-shen-sp3'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd ~/CommonAssessmentTool
+            git checkout main
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build

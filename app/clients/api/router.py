@@ -23,6 +23,17 @@ from app.clients.schemas import (
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
+# ------------------ CD Test Endpoint ------------------
+
+@router.get("/cd-test", tags=["CD Test"])
+async def cd_pipeline_test():
+    """
+    A simple endpoint to verify that the CD pipeline works.
+    Returns a fixed message.
+    """
+    return {"message": "CD pipeline is working!"}
+
+
 # ------------------ Clients ------------------
 
 
