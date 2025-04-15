@@ -76,38 +76,7 @@ docker-compose up
 
 ## Remote Access
 
-### Step 1: Start the EC2 Instance
-
-- Go to AWS EC2 Console
-- Find your instance
-- Click **Start instance** and wait until the status becomes `running`
-
-### Step 2: SSH into the EC2 Instance
-
-Open your terminal and run(Make sure you’re in the same directory as your .pem file):
-
-```bash
-ssh -i path/to/your-key.pem ubuntu@<your-ec2-public-ip>
-```
-
-Replace path/to/your-key.pem with the actual path to your key file
-
-Replace <your-ec2-public-ip> with the public IPv4 address of your EC2
-
-### Step 3: Navigate to Your Project Directory
-
-```bash
-cd CommonAssessmentTool
-```
-
-### Step 4: Start the Backend with Docker
-
-```bash
-docker-compose up
-```
-### Step 5: Access the Swagger UI
-
 Open your browser and go to:
 ```bash
-http://<your-ec2-public-ip>:8000/docs
+http://ec2-3-13-69-51.us-east-2.compute.amazonaws.com:8000/docs
 ```
