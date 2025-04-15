@@ -26,16 +26,16 @@ router = APIRouter(prefix="/clients", tags=["clients"])
 # ------------------ Clients ------------------
 
 
-@router.get("/", response_model=ClientListResponse)
-async def get_clients(
-    current_user: User = Depends(get_admin_user),
-    skip: int = Query(default=0, ge=0, description="Number of records to skip"),
-    limit: int = Query(
-        default=50, ge=1, le=150, description="Maximum number of records to return"
-    ),
-    db: Session = Depends(get_db),
-):
-    return ClientRepository(db).get_clients(skip, limit)
+# @router.get("/", response_model=ClientListResponse)
+# async def get_clients(
+#     current_user: User = Depends(get_admin_user),
+#     skip: int = Query(default=0, ge=0, description="Number of records to skip"),
+#     limit: int = Query(
+#         default=50, ge=1, le=150, description="Maximum number of records to return"
+#     ),
+#     db: Session = Depends(get_db),
+# ):
+#     return ClientRepository(db).get_clients(skip, limit)
 
 
 @router.get("/{client_id}", response_model=ClientResponse)
