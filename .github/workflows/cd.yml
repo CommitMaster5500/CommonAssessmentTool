@@ -59,6 +59,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
+            chmod 600 ~/.ssh/id_rsa
             cd ~/CommonAssessmentTool
             git pull origin main
             git checkout main
